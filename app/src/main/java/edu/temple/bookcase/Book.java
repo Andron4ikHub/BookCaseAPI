@@ -3,29 +3,29 @@ package edu.temple.bookcase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Book implements Parcelable {
     private int id;
     private String title;
     private String author;
-    private String duration;
-    private int published;
-    private String coverUrl;
+    private String coverURL;
+    private String published;
+    public int duration;
 
-    public Book(int id, String title, String author, String duration, int published, String coverUrl) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.duration = duration;
-        this.published = published;
-        this.coverUrl = coverUrl;
+    public Book(JSONObject jsonBook) throws JSONException {
+        this.title = jsonBook.getString("title"); this.author = jsonBook.getString("author");
+        this.coverURL = jsonBook.getString("cover_url");
+        this.id = jsonBook.getInt("book_id"); this.published = jsonBook.getString("published");
     }
 
     protected Book(Parcel in) {
         id = in.readInt();
         title = in.readString();
         author = in.readString();
-        published = in.readInt();
-        coverUrl = in.readString();
+        coverURL = in.readString();
+        published = in.readString();
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -40,52 +40,48 @@ public class Book implements Parcelable {
         }
     };
 
-    public int getId() {
-        return id;
-    }
-
+    //setters and getters
     public void setId(int id) {
+
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public void setPublished(String published) {
+
+        this.published = published;
     }
 
     public void setTitle(String title) {
-        this.title = title;
-    }
 
-    public String getAuthor() {
-        return author;
+        this.title = title;
     }
 
     public void setAuthor(String author) {
         this.author = author;
     }
 
-    public String getDuration() {
-        return duration;
+    public void setCoverURL(String coverURL) {
+        this.coverURL = coverURL;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public int getId() {
+        return id;
     }
 
-    public int getPublished() {
+    public String getPublished() {
         return published;
     }
 
-    public void setPublished(int published) {
-        this.published = published;
+    public String getTitle() {
+        return title;
     }
 
-    public String getCoverUrl() {
-        return coverUrl;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
+    public String getCoverURL() {
+        return coverURL;
     }
 
     @Override
@@ -98,18 +94,7 @@ public class Book implements Parcelable {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(author);
-        dest.writeInt(published);
-        dest.writeString(coverUrl);
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", published=" + published +
-                ", coverUrl='" + coverUrl + '\'' +
-                '}';
+        dest.writeString(coverURL);
+        dest.writeString(published);
     }
 }
